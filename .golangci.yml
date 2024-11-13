@@ -21,7 +21,7 @@ linters-settings:
   lll:
     line-length: 500
   goimports:
-    local-prefixes: github.com/o1egl/paseto/v2
+    local-prefixes: github.com/jessywts/paseto/v2
   gocritic:
     enabled-tags:
       - diagnostic

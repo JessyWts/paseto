@@ -5,8 +5,8 @@ import (
 	"crypto/rand"
 	"io"
 
+	"github.com/jessywts/chacha20poly1305"
 	"golang.org/x/crypto/blake2b"
-	"golang.org/x/crypto/chacha20poly1305"
 	"golang.org/x/crypto/ed25519"
 	errors "golang.org/x/xerrors"
 )
@@ -64,7 +64,7 @@ func (p *V2) Encrypt(key []byte, payload, footer interface{}) (string, error) {
 
 	nonce := hash.Sum(nil)
 
-	aead, err := chacha20poly1305.NewX(key)
+	aead, err := chacha20poly1305.NewXCipher(key)
 	if err != nil {
 		return "", errors.Errorf("failed to create chacha20poly1305 cipher: %w", err)
 	}
@@ -88,7 +88,7 @@ func (*V2) Decrypt(token string, key []byte, payload, footer interface{}) error 
 	nonce := body[:XNonceSize]
 	encryptedPayload := body[XNonceSize:]
 
-	aead, err := chacha20poly1305.NewX(key)
+	aead, err := chacha20poly1305.NewXCipher(key)
 	if err != nil {
 		return errors.Errorf("failed to create chacha20poly1305 cipher: %w", err)
 	}
